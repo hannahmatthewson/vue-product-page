@@ -1,0 +1,199 @@
+<! DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale="1.0">
+    <title>Product App</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .company-information {
+        height: 60px;
+        width: 100%;
+        background-color: white;
+        color: #004080;
+        text-align: center;
+      }
+        .company-left {
+          display: inline-block;
+          width: 40%;
+          font-weight: bold;
+        }
+          .company-left > p > a {
+            color: #004080;
+            text-decoration: none;
+          }
+        .company-center {
+          display: inline-block;
+          width: 17%;
+          font-size: 20px;
+          font-weight: bold;
+        }
+        .company-right {
+          display: inline-block;
+          width: 42%;
+        }
+          .company-right > span {
+            padding-left: 50px;
+            padding-right: 30px;
+          }
+            .company-right > span > a > img {
+              height: 50px;
+              vertical-align: middle;
+            }
+            .company-right > span > a {
+              color: #004080;
+              text-decoration: none;
+            }
+      #search-bar {
+        padding: 10px;
+        width: 200px;
+      }
+      .navbar {
+        height: 60px;
+        width: 100%;
+        background-color: #004080;
+        color: white;
+        margin-bottom: 50px;
+      }
+        .navbar > ul {
+          width: 70%;
+          margin: auto;
+          text-align: center;
+          padding: 20px;
+        }
+          .navbar > ul > li {
+            display: inline-block;
+            list-style: none;
+            width: 15%;
+            text-align: center;
+          }
+            .navbar > ul > li > a {
+              color: white;
+              text-decoration: none;
+            }
+            .navbar > ul > li > strong > a {
+              color: white;
+              text-decoration: none;
+              font-size: 15px;
+            }
+      .product {
+        width: 100%;
+        margin: auto;
+      }
+      .product-image {
+        width: 49%;
+        display: inline-block;
+        margin-top: 20px;
+      }
+        .product-image > img {
+          height: 560px;
+          width: 450px;
+          padding-left: 100px;
+        }
+      .product-info {
+        width: 49%;
+        display: inline-block;
+        vertical-align: top;
+        color: #004080;
+      }
+        .product-info > p > strong {
+          font-size: 20px;
+        }
+      .heading {
+        color: grey;
+        font-size: 15px;
+      }
+         .heading > strong {
+           font-size: 13px;
+         }
+      .color-box {
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        margin: 10px;
+      }
+      .size-list {
+        display: inline-block;
+        list-style: none;
+      }
+      .clothing-sizes > ul > li {
+        border: 1px solid #ccccff;
+        padding: 5px;
+        width: 40px;
+        text-align: center;
+      }
+      #add-item {
+        padding: 10px;
+        width: 400px;
+        font-size: 15px;
+        font-weight: bold;
+        background-color: #00cc66;
+        border: #00cc66;
+        color: white;
+        box-shadow: 3px 3px 3px #99ffcc;
+      }
+      .footer {
+        height: 100px;
+        background-color: #004080;;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="company-information">
+      <div class="company-left">
+        <p>
+          <a href="#">FIND A STORE</a>
+        </p>
+      </div>
+      <div class="company-center">
+        <p>ONLINE SHOP</p>
+      </div>
+      <div class="company-right">
+        <span>
+          <input type="text" placeholder="Search" id="search-bar">
+        </span>
+        <span>
+          <a href="#">Sign In</a>
+        </span>
+        <span>
+          <a href="#">
+            <img src="./images/basket-icon.jpg">
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div class="navbar">
+      <ul>
+        <li>
+          <a href="#">Womens</a>
+        </li>
+        <li>
+          <a href="#">Mens</a>
+        </li>
+        <li>
+          <a href="#">Kids</a>
+        </li>
+        <li>
+          <strong>
+            <a href="a">SALE</a>
+          </strong>
+        </li>
+      </ul>
+    </div>
+
+    <div id="app">
+      <product></product>
+    </div>
+
+    <div class="footer">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="product-page.js"></script>
+  </body>
+</html>
