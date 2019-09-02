@@ -77,6 +77,12 @@
               text-decoration: none;
               font-size: 15px;
             }
+      .cart {
+        text-align: right;
+        padding-right: 75px;
+        font-size: 18px;
+        font-weight: 500;
+      }
       .product {
         width: 100%;
         margin: auto;
@@ -143,51 +149,53 @@
 
   <body>
 
-    <div class="company-information">
-      <div class="company-left">
-        <p>
-          <a href="#">FIND A STORE</a>
-        </p>
-      </div>
-      <div class="company-center">
-        <p>ONLINE SHOP</p>
-      </div>
-      <div class="company-right">
-        <span>
-          <input type="text" placeholder="Search" id="search-bar">
-        </span>
-        <span>
-          <a href="#">Sign In</a>
-        </span>
-        <span>
-          <a href="#">
-            <img src="./images/basket-icon.jpg">
-          </a>
-        </span>
-      </div>
-    </div>
-
-    <div class="navbar">
-      <ul>
-        <li>
-          <a href="#">Womens</a>
-        </li>
-        <li>
-          <a href="#">Mens</a>
-        </li>
-        <li>
-          <a href="#">Kids</a>
-        </li>
-        <li>
-          <strong>
-            <a href="a">SALE</a>
-          </strong>
-        </li>
-      </ul>
-    </div>
-
     <div id="app">
-      <product></product>
+      <div class="company-information">
+        <div class="company-left">
+          <p>
+            <a href="#">FIND A STORE</a>
+          </p>
+        </div>
+        <div class="company-center">
+          <p>ONLINE SHOP</p>
+        </div>
+        <div class="company-right">
+          <span>
+            <input type="text" placeholder="Search" id="search-bar">
+          </span>
+          <span>
+            <a href="#">Sign In</a>
+          </span>
+          <span>
+            <a href="#">
+              <img src="./images/basket-icon.jpg">
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <ul>
+          <li>
+            <a href="#">Womens</a>
+          </li>
+          <li>
+            <a href="#">Mens</a>
+          </li>
+          <li>
+            <a href="#">Kids</a>
+          </li>
+          <li>
+            <strong>
+              <a href="a">SALE</a>
+            </strong>
+          </li>
+        </ul>
+      </div>
+      <div class="cart">
+          <p>Bag({{cart}})</p>
+      </div>
+      <product :premium="premium" @add-to-cart="updateCart"></product>
     </div>
 
     <div class="footer">

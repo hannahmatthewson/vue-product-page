@@ -1,0 +1,332 @@
+---
+name: 'Limelite Delivery Note (accessories) (20/08/19)'
+module: Opportunity
+states: ["Order"]
+statuses: ["Open", "Active"]
+page_size: A4
+orientation: Portrait
+margin:
+  top: 80
+  left: 15
+  bottom: 10
+  right: 15
+filename_fields: ["number", "subject", "document_name", "id"]
+active: true
+description: ''
+---
+
+*** LAYOUT SECTION ***
+---
+section: header
+---
+
+<!-- Company/Store logo section -->
+<div class="section clearfix">
+  <div class="client_icon">
+    <img src="{{ company.icon_url }}" style="max-height: 100px;">
+  </div>
+  <!-- Company/Store address and customer billing address section -->
+  <div class="section address-section clearfix">
+    <div class="store-address">
+      <address>
+        {{ company.name }}<br/>
+        {{ order.store_address | newline_to_br }}<br/>
+        {% if order.store_email != blank %}
+          {{ order.store_email }}<br />
+        {% endif %}
+        {% if order.store_telephone != blank %}
+          {{ order.store_telephone }}<br />
+        {% endif %}
+        {% if order.store_website != blank %}
+          {{ order.store_website }}<br />
+        {% endif %}
+      </address>
+    </div>
+  </div>
+</div>
+
+<!-- Document title section -->
+<div class="title-section clearfix">
+  <div class="order-details-left">
+    <h3>Delivery Note</h3>
+    <p class="document-date">{{ order.ordered_at | localedate }}</p>
+  </div>
+  <div class="order-details-right">
+    <p class="order-name">Project Name: {{ order.name }}</p>
+    <p class="order-number">Project Number: {{ order.number }}</p>
+  </div>
+</div>
+
+*** LAYOUT SECTION ***
+---
+section: body
+---
+
+<!-- Order details -->
+<div class="rental-details clearfix">
+  <div class="order-block">
+    <p><strong>Client Details</strong></p>
+    <p>{{ order.billing_address_name }}</p>
+    <p>{{ order.billing_address | newline_to_br }}</p>
+  </div>
+  <div class="order-block">
+    <p><strong>Rental Start Details</strong></p>
+    <p>{{ order.starts_at | localedate }}</p>
+    {% if order.customer_collecting %}
+      <p>Customer Collecting</p>
+    {% else %}
+      <p>{{ order.delivery_address | newline_to_br }}</p>
+    {% endif %}
+  </div>
+  <div class="order-block">
+    <p><strong>Rental Out Details</strong></p>
+    <p>{{ order.ends_at | localedate }}</p>
+    {% if order.customer_returning %}
+      <p>Customer Returning</p>
+    {% else %}
+      <p>{{ order.delivery_address | newline_to_br }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Items section -->
+<div class="body-section">
+  <table class="table item-list">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th></th>
+        <th class="align-center">Qty</th>
+        <th class="align-center">Delivered</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in order.items %}
+        {% if item.is_group? %}
+          <tr class="group">
+            <td colspan="4" style="padding-left: {{ item.depth_padding }}px;">
+              <h4>{{ item.name }}</h4>
+              {% if item.description != blank %}
+                <p>{{ item.description | newline_to_br }}</p>
+              {% endif %}
+            </td>
+          </tr>
+        {% elsif item.is_item? %}
+          {% unless item.is_accessory? %}
+            <tr>
+              <td style="padding-left: {{ item.depth_padding }}px;" colspan="2">
+                {{ item.name }}
+                {% if item.is_accessory? %}
+                  <em>({{ item.accessory_mode_name }})</em>
+                {% endif %}
+              </td>
+              <td class="align-center">
+                {{ item.quantity | number }}
+                {% if item.is_service? %}
+                  x
+                  {{ item.chargeable_days | number:0 }}
+                  {{ item.service_unit_name }}
+                {% endif %}
+              </td>
+              <td class="align-center">
+                <div class="tick-box"></div>
+              </td>
+            </tr>
+            {% if item.description != blank %}
+              <tr class="description">
+                <td style="padding-left: {{ item.depth_padding }}px;" colspan="4">{{ item.description | newline_to_br }}</td>
+              </tr>
+            {% endif %}
+          {% endunless %}
+         
+          {% if item.is_accessory? %}
+            <tr class="accessory">
+              <td style="padding-left: {{ item.depth_padding }}px;" colspan="2">
+                {{ item.name }}
+                  <em>({{ item.accessory_mode_name }})</em>
+              </td>
+              <td class="align-center">
+                {{ item.quantity | number }}
+                {% if item.is_service? %}
+                  x
+                  {{ item.chargeable_days | number:0 }}
+                  {{ item.service_unit_name }}
+                {% endif %}
+              </td>
+              <td class="align-center fixed-col">
+                <div class="tick-box"></div>
+              </td>
+            </tr>
+            {% if item.description != blank %}
+              <tr class="description">
+                <td style="padding-left: {{ item.depth_padding }}px;" colspan="4">{{ item.description | newline_to_br }}</td>
+              </tr>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <table class="table closing-totals">
+    <tbody>
+      <tr class="overall-totals">
+        <td class="fixed-col">
+          <p><strong>Insurance Value</strong></p>
+          <p><strong>Estimated Total Weight</strong></p>
+        </td>
+        <td class="align-right">
+          <p><strong>{{ order.replacement_charge_total | currency }}</strong></p>
+          <p><strong>{{ order.weight_total | number:2 }} {{ company.weight_unit }}</strong></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Signature section -->
+<div class="section">
+	<table class="signature-block">
+		<tr style="line-height: 48px;">
+			<td style="width: 15%;">Signed</td>
+			<td style="width: 35%;"><!--SIGNATURE--></td>
+			<td style="width: 15%;">Printed</td>
+			<td style="width: 35%;"><!--SIGNED_BY--></td>
+		</tr>
+		<tr style="line-height: 24px;">
+			<td colspan="4">Date: <!--SIGNED_AT--></td>
+		</tr>
+	</table>
+</div>
+
+*** LAYOUT SECTION ***
+---
+section: footer
+---
+
+
+
+*** LAYOUT SECTION ***
+---
+section: stylesheet
+---
+
+<style type="text/css">
+.client_icon {
+  float: left;
+  height: 100px;
+}
+
+.section {
+  color: black;
+  width: 100%;
+}
+
+.address-section {
+  line-height: 1em;
+}
+
+.address-section .store-address {
+  float: right;
+  font-size: 16px;
+  text-align: right;
+}
+
+.order-details-left {
+  float: left;
+  font-size: 22px;
+  font-weight: bold;
+  width: 40%;
+}
+
+.order-details-left h3 {
+  font-weight: bold;
+  margin-top: 0px;
+}
+
+.order-details-right {
+  float: right;
+  font-size: 22px;
+  font-weight: bold;
+  width: 60%;
+}
+
+.rental-details {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 15px;
+  width: 100%;
+  display: table;
+}
+
+.order-block {
+  width: 33.3%;
+  display: table-cell;
+  border-right: 1px solid #1ea41e;
+  padding-right: 10px;
+}
+.rental-details .order-block:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table > thead > tr {
+  border-top: 2px solid #1ea41e;
+  border-bottom: 2px solid #1ea41e;
+}
+
+.table > thead > tr > th {
+  border-top: 1px solid #1ea41e;
+  border-bottom: 1px solid #1ea41e;
+}
+
+.table > tbody > tr > td > div.tick-box {
+  border: 1px solid black;
+  height: 20px;
+  width: 20px;
+  margin-left: 110px;
+}
+
+.table > tbody > tr.totals-row > td {
+  border-top: 2px solid #1ea41e;
+  border-bottom: 2px solid #1ea41e;
+}
+
+.table > tbody > tr.group > td {
+  border-bottom: 2px solid #1ea41e;
+}
+
+.table > tbody > tr.accessory > td {
+  font-size: 0.75em;
+  border: 0px; 
+}
+
+.table > tbody >tr.overall-totals > td {
+  border-top: 2px solid #1ea41e;
+  border-bottom: 2px solid #1ea41e;
+}
+
+.signature-block {
+  border: 1px solid black;
+  margin-bottom: 8px;
+  width: 100%;
+}
+  .signature-block tr {
+    border: 1px solid black;
+  }
+    .signature-block td {
+	  padding: 8px;
+	}
+
+p.smaller-text {
+  margin:0;
+}
+
+.smaller-text {
+  font-size: 13px;
+}
+</style>

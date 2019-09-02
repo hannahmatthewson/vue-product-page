@@ -1,4 +1,10 @@
 Vue.component('product', {
+  props: {
+    premium: {
+      type: Boolean,
+      required: true
+    }
+  },
   template: `
     <div class="product">
 
@@ -33,13 +39,11 @@ Vue.component('product', {
           <p v-if="onSale">
             <strong>ON SALE!</strong>
           </p>
+          <p>Shipping: {{ shipping }}</p>
         </div>
 
         <div class="cart-button">
           <button @click="addToCart" :disabled="!inStock" id="add-item">ADD TO BAG</button>
-          <div class="cart">
-            <p>Bag({{cart}})</p>
-          </div>
         </div>
 
         <div class="product-details">
@@ -66,7 +70,7 @@ Vue.component('product', {
         description: 'Oversized jumper',
         onSale: false,
         selectedVariant: 0,
-        link: 'https://uk.tommy.com/womens-hoodies-sweatshirts',
+        link: '#',
         details: ["80% cotton", "20% polyester", "Machine-washable"],
         styleStock: {
           color: 'grey',
@@ -87,12 +91,11 @@ Vue.component('product', {
             variantQuantity: 0,
           }
         ],
-        cart: 0,
         }
   },
   methods: {
     addToCart: function() {
-      this.cart += 1
+      this.$emit('add-to-cart')
     },
     updateProduct: function (index) {
       this.selectedVariant = index
@@ -109,9 +112,24 @@ Vue.component('product', {
       inStock() {
         return this.variants[this.selectedVariant].variantQuantity
       },
+      shipping() {
+        if (this.premium) {
+          return "Free"
+        }
+        return 2.99
+      }
     }
 })
 
 var app = new Vue ({
   el: '#app',
+  data: {
+    premium: true,
+    cart: 0,
+  },
+  methods: {
+    updateCart() {
+      this.cart += 1
+    }
+  }
 })
